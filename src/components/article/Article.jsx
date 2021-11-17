@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { useContext } from "react";
 import { Context } from "../../context/Context";
 import { decryptData } from "../../config/utils";
+import Env from "../../config/env";
 
 
 
@@ -23,7 +24,7 @@ export default function Article() {
 
     useEffect(() => {
         const getArticle = async () => {
-            await axios.get("/article/get/" + pathUrl)
+            await axios.get(Env.url + "/article/get/" + pathUrl)
                 .then((response) => {
                     setFetchArticle(response.data);
                     setCategorie(response.data.categorie.nom);
@@ -35,7 +36,7 @@ export default function Article() {
     }, [])
 
     const handleDelete = async () => {
-        await axios.delete("/article/auteur/" + username + "/delete/" + fetchArticle.id,
+        await axios.delete(Env.url +"/article/auteur/" + username + "/delete/" + fetchArticle.id,
             {
                 headers: { 'Authorization': decryptData(token) }
             });
@@ -44,7 +45,7 @@ export default function Article() {
 
     useEffect(() => {
         const fetchingCategories = async () => {
-            await axios.get("/api/categorie/getAll")
+            await axios.get(Env.url +"/api/categorie/getAll")
                 .then((response) => {
                     setCategorieListe(response.data);
                 })
@@ -60,7 +61,7 @@ export default function Article() {
             contenu
         }
         //Verifie si une caté est bien selectionnée
-        await axios.put("/article/auteur/" + username + "/modify?categorie=" + categorie,
+        await axios.put(Env.url +"/article/auteur/" + username + "/modify?categorie=" + categorie,
             newPost,
             {
                 headers: { 'Authorization': decryptData(token) }

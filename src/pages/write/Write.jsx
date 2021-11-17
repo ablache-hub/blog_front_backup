@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from 'react';
 import { Context } from '../../context/Context';
 import axios from "axios";
 import { decryptData } from '../../config/utils'
+import Env from "../../config/env";
 
 
 
@@ -23,7 +24,7 @@ export default function Write() {
 
         //Verifie si une caté est bien selectionnée
         categorie.length > 0 &&
-            await axios.post("/article/" + username + "?categorie=" + categorie,
+            await axios.post(Env.url +"/article/" + username + "?categorie=" + categorie,
                 newPost,
                 {
                     headers: { 'Authorization': decryptData(token) }
@@ -41,7 +42,7 @@ export default function Write() {
 
     useEffect(() => {
         const fetchingCategorie = async () => {
-            await axios.get("/api/categorie/getAll")
+            await axios.get(Env.url +"/api/categorie/getAll")
                 .then((response) => {
                     setCategorieListe(response.data);
                 })

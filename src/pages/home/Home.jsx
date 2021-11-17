@@ -6,6 +6,7 @@ import ListeArticles from "../../components/listeArticles/ListeArticles"
 import Sidebar from "../../components/sidebar/Sidebar"
 import "./home.css"
 import Pagination from "../../config/pagination";
+import Env from "../../config/env";
 
 export default function Home() {
 
@@ -20,20 +21,20 @@ export default function Home() {
         const fetchingArticle = async () => {
             //Si catégorie dans URL, on récup la catégorie et on fetch avec
             location.includes("cat=") ?
-                await axios.get("/article/get/allByCategorie/" + location.replace("cat=", ""))
+                await axios.get(Env.url +"/article/get/allByCategorie/" + location.replace("cat=", ""))
                     .then((response) => {
                         setFetchArticle(response.data)
                     })
                 :
                 //Sinon si param dans l'URL mais pas de "cat=" (donc username)
                 (location ?
-                    await axios.get("/api/user/get/" + location)
+                    await axios.get(Env.url +"/api/user/get/" + location)
                         .then((response) => {
                             setFetchArticle(response.data.articles)
                         })
                     //Sinon on charge la liste générique
                     :
-                    await axios.get("/article/get/all")
+                    await axios.get(Env.url +"/article/get/all")
                         .then((response) => {
                             setFetchArticle(response.data)
                         })
@@ -51,7 +52,7 @@ export default function Home() {
     return (
         <>
             <Header />
-            <div className="home">
+            <main className="home">
                 <article className="paginate-list">
                     <Pagination className="pagination" postPerPage={postsPerPage} totalPosts={fetchArticle.length} paginate={paginate} />
                     {
@@ -63,7 +64,7 @@ export default function Home() {
                     <Pagination className="pagination" postPerPage={postsPerPage} totalPosts={fetchArticle.length} paginate={paginate} />
                 </article>
                 <Sidebar />
-            </div>
+            </main>
         </>
     )
 }

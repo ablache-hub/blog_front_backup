@@ -1,6 +1,7 @@
 import "./sidebar.css"
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Env from "../../config/env";
 
 
 export default function Sidebar() {
@@ -9,7 +10,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         const fetchingCategorie = async () => {
-            await axios.get("/api/categorie/getAll")
+            await axios.get(Env.url +"/api/categorie/getAll")
                 .then((response) => {
                     setCategorie(response.data);
                 })
@@ -18,28 +19,29 @@ export default function Sidebar() {
     }, [])
 
     return (
-        <div className="sidebar">
-            <div className="sidebarItem">
-                <span className="sidebarTitle">ABOUT ME</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, exercitationem.
-                </p>
-            </div>
-            <div className="sidebarItem">
-                <span className="sidebarTitle">CATEGORIES</span>
+        <section className="sidebar">
+            <aside className="sidebarItem">
+                <h1 className="sidebarTitle">ABOUT ME</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, exercitationem.</p>
+            </aside>
+            <aside className="sidebarItem">
+                <h1 className="sidebarTitle">CATEGORIES</h1>
                 <ul className="sidebarList">
                     {categorie.map((categorie) => (
-                        <li className="sidebarListItem" key={categorie.id}><a href={`/?cat=${categorie.nom}`}>{categorie.nom}</a></li>
+                        <li className="sidebarListItem" key={categorie.id}>
+                            <a href={`/?cat=${categorie.nom}`}>{categorie.nom}</a>
+                        </li>
                     )
                     )}
-                </ul> 
-            </div>
-            <div className="sidebarItem">
-                <span className="sidebarTitle">FOLLOW US</span>
-                <div className="sidebarSocial">
-                    <i className="sidebarIcon fab fa-facebook-square"></i>
-                    <i className="sidebarIcon fab fa-twitter-square"></i>
-                </div>
-            </div>
-        </div>
+                </ul>
+            </aside>
+            <aside className="sidebarItem">
+                <h1 className="sidebarTitle">FOLLOW US</h1>
+                <aside className="sidebarSocial">
+                    <i className="sidebarIcon fab fa-facebook-square" />
+                    <i className="sidebarIcon fab fa-twitter-square" />
+                </aside>
+            </aside>
+        </section>
     )
 }

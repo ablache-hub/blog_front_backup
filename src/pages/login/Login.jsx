@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { Context } from '../../context/Context';
 import { encryptData } from '../../config/utils'
 import './login.css'
+import Env from '../../config/env';
 
 export default function Login() {
 
@@ -16,7 +17,7 @@ export default function Login() {
         e.preventDefault();
         dispatch({ type: "LOGIN_START" });
         try {
-            const res = await axios.post("/login", {
+            const res = await axios.post(Env.url +"/login", {
                 username: userRef.current.value,
                 password: passwordRef.current.value,
             })

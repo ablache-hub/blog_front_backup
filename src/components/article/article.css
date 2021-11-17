@@ -21,6 +21,8 @@
     margin: 10px;
     font-family: 'Lora', serif;
     font-size: 28px;
+    align-self: center;
+    width: 100%;
 }
 
 .singlePostTitleInput {

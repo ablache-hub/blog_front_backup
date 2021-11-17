@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { Context } from "../../context/Context";
 import axios from 'axios';
 import { decryptData } from '../../config/utils'
+import Env from '../../config/env';
 
 
 
@@ -16,7 +17,7 @@ export default function Profil() {
 
     useEffect(() => {
         const fetchingProfilArticles = async () => {
-            await axios.get("/api/user/myCredentials", { headers: { 'Authorization': decryptData(token) } })
+            await axios.get(Env.url +"/api/user/myCredentials", { headers: { 'Authorization': decryptData(token) } })
                 .then((response) => {
                     setFetchProfil(response.data);
                 })
@@ -30,7 +31,7 @@ export default function Profil() {
 
     useEffect(() => {
         const deleteProfileArticle = async () => {
-            await axios.delete("/article/auteur/" + username + "/delete/" + id,
+            await axios.delete(Env.url +"/article/auteur/" + username + "/delete/" + id,
                 {
                     headers: { 'Authorization': decryptData(token) }
                 });

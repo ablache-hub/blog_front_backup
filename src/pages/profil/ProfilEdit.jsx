@@ -5,12 +5,14 @@ import { useLocation } from "react-router"
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { decryptData } from '../../config/utils';
+import Env from '../../config/env';
+
 
 export default function ProfilDel() {
     const location = useLocation().pathname.split("/")[4];
     const { token, username } = useContext(Context);
     const [categorieListe, setCategorieListe] = useState([]);
-    const [title, setTitle] = useState('');
+    const [titre, setTitre] = useState('');
     const [contenu, setContenu] = useState('');
     const [categorie, setCategorie] = useState('');
 
@@ -18,11 +20,11 @@ export default function ProfilDel() {
         e.preventDefault();
         const newPost = {
             id: location,
-            titre: title,
+            titre,
             contenu
         }
         //Verifie si une caté est bien selectionnée
-        await axios.put("/article/auteur/" + username + "/modify?categorie=" + categorie,
+        await axios.put(Env.url +"/article/auteur/" + username + "/modify?categorie=" + categorie,
             newPost,
             {
                 headers: { 'Authorization': decryptData(token) }
@@ -32,11 +34,10 @@ export default function ProfilDel() {
 
     useEffect(() => {
         const fetchingProfilArticle = async () => {
-            await axios.get("/article/get/" + location, { headers: { 'Authorization': decryptData(token) } })
+            await axios.get(Env.url +"/article/get/" + location, { headers: { 'Authorization': decryptData(token) } })
                 .then((response) => {
-                    // setFetchArticle(response.data);
                     setCategorie(response.data.categorie.nom);
-                    setTitle(response.data.titre);
+                    setTitre(response.data.titre);
                     setContenu(response.data.contenu);
                 })
         }
@@ -45,7 +46,7 @@ export default function ProfilDel() {
 
     useEffect(() => {
         const fetchingCategorie = async () => {
-            await axios.get("/api/categorie/getAll")
+            await axios.get(Env.url +"/api/categorie/getAll")
                 .then((response) => {
                     setCategorieListe(response.data);
                 })
@@ -59,11 +60,11 @@ export default function ProfilDel() {
                 <div className="form-example">
                     <label htmlFor="name">Titre: </label>
                     <input
-                        defaultValue={title}
+                        defaultValue={titre}
                         type="text"
                         name="titre"
                         className="titre"
-                        onChange={e => setTitle(e.target.value)}
+                        onChange={e => setTitre(e.target.value)}
                         required />
                 </div>
 
@@ -83,16 +84,17 @@ export default function ProfilDel() {
                     }
                 </select>
 
-                <div className="form-example">
+                <div className="contenu">
                     <label
                         htmlFor="email">Contenu: </label>
-                    <input
+                    <textarea
                         defaultValue={contenu}
                         type="text"
                         name="contenu"
-                        className="contenu"
-                        onChange={e => setContenu(e.target.value)}
-                        required />
+                        className="input-contenu"
+                        rows="15"
+                        cols="50"
+                        onChange={e => setContenu(e.target.value)}/>
                 </div>
 
                 <div className="form-example">
